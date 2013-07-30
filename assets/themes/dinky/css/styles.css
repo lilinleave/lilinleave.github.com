@@ -226,8 +226,8 @@ p.header {
 }
 
 h1.header {
-	font-family: 'Arvo', sans-serif;
-	font-size: 30px;
+	font-family: 'Arvo', "courier new", sans-serif;
+	font-size: 28px;
 	font-weight: 300;
 	line-height: 1.3em;
 	border-bottom: none;
@@ -240,7 +240,6 @@ h1.header, a.header, a.name, header a{
 }
 
 a.header {
-	font-family: 'Arvo', sans-serif;
 	text-decoration: underline;
 }
 
