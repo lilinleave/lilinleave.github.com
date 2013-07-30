@@ -206,7 +206,7 @@ td {
 header {
 	background-color: #171717;
 	color: #FDFDFB;
-  width:190px;
+  width:210px;
   float:left;
   position:fixed;
 	border: 1px solid #000;
@@ -227,7 +227,7 @@ p.header {
 
 h1.header {
 	font-family: 'Arvo', "courier new", sans-serif;
-	font-size: 28px;
+	font-size: 30px;
 	font-weight: 300;
 	line-height: 1.3em;
 	border-bottom: none;
@@ -254,7 +254,7 @@ header ul {
 
 header li {
 	list-style-type: none;
-  width:182px;
+  width:192px;
   height:15px;
 	margin-bottom: 12px;
 	line-height: 1em;
@@ -317,7 +317,7 @@ section {
 /* Footer */
 
 footer {
-  width:190px;
+  width:210px;
   float:left;
   position:fixed;
   bottom:10px;
