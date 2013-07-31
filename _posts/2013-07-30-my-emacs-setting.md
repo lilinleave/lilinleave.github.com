@@ -6,10 +6,15 @@ tags: [Emacs, Emacs Prelude, Font]
 ---
 {% include JB/setup %}
 
-# Emacs prelude
+## Table of Contents
+- [1 Emacs prelude](#sec1)
+- [2 Customize font in Emacs on Ubuntu](#sec2)
+- [3 My personal.el file](#sec3)
+
+## <span id="sec1">Emacs prelude</span>
 I use the [Emacs Prelude](http://batsov.com/prelude/) to support the customization of my Emacs.
 
-## Install
+### <span id="sec1.1">Install</span>
 - Install Emacs 24
 
 - If you are not a beginner you might already have .emacs and .emacs.d under your home folder. Then before installation first rename your ~/.emacs to personal.el, and ~/.emacs.d to ~/personal. Move personal.el into ~/personal.
@@ -25,10 +30,10 @@ I use the [Emacs Prelude](http://batsov.com/prelude/) to support the customizati
 
 - Now a .emacs.d is built again under your home folder. Move your ~/personal into it. Your personal.el will be loaded at last on starting emacs.
 
-## Usage
+### <span id="sec1.2">Usage</span>
 Follow the instruction on [Emacs Prelude](http://batsov.com/prelude/) to get start with the default settings and key bindings in prelude. Unfortunately many features are not mentioned and you are recommended to read the source codes.
 
-# Customize font in Emacs on Ubuntu
+## <span id="sec2">Customize font in Emacs on Ubuntu</span>
 The default font looks ugly for me and I've determined to change it the first week I used Emacs. There are two ways to do that: 1. Define font in .emacs (for me the personal.el file); 2. Define font in X. If you choose the first solution Emacs will start with its default font and change to your font after .emacs is loaded and that's annoying for me. Here's how to do it in the second way:
 
 - Install font manager
@@ -72,7 +77,7 @@ The default font looks ugly for me and I've determined to change it the first we
 
 - Now restart your Emacs to see the effect.
 
-# My personal.el file
+## <span id="sec3">My personal.el file</span>
 The following is just a backup.
 
     ;;; personal.el --- my settings
