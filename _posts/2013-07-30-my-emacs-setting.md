@@ -47,15 +47,15 @@ The default font looks ugly for me and I've determined to change it the first we
 
 - If you get nothing then the font you choose is not a X-font and you have to choose another one. Otherwise you'll get output like
 
-    > -bitstream-bitstream charter-bold-i-normal--0-0-0-0-p-0-adobe-standard
-    > -bitstream-bitstream charter-medium-i-normal--0-0-0-0-p-0-adobe-standard
-    > -bitstream-bitstream charter-medium-r-normal--0-0-0-0-p-0-adobe-standard
-    > -bitstream-bitstream charter-medium-r-normal--0-0-0-0-p-0-ascii-0
-    > -bitstream-bitstream charter-medium-r-normal--0-0-0-0-p-0-iso10646-1
-    > -bitstream-bitstream charter-medium-r-normal--0-0-0-0-p-0-iso8859-1
-    > -bitstream-charter-bold-i-normal--0-0-100-100-p-0-iso8859-1
-    > -bitstream-charter-bold-r-normal--0-0-100-100-p-0-iso8859-1
-    > --More--
+        -bitstream-bitstream charter-bold-i-normal--0-0-0-0-p-0-adobe-standard
+        -bitstream-bitstream charter-medium-i-normal--0-0-0-0-p-0-adobe-standard
+        -bitstream-bitstream charter-medium-r-normal--0-0-0-0-p-0-adobe-standard
+        -bitstream-bitstream charter-medium-r-normal--0-0-0-0-p-0-ascii-0
+        -bitstream-bitstream charter-medium-r-normal--0-0-0-0-p-0-iso10646-1
+        -bitstream-bitstream charter-medium-r-normal--0-0-0-0-p-0-iso8859-1
+        -bitstream-charter-bold-i-normal--0-0-100-100-p-0-iso8859-1
+        -bitstream-charter-bold-r-normal--0-0-100-100-p-0-iso8859-1
+        --More--
 
 - Create a .Xresources under your home folder if you don't have one. Write the following in it:
 
