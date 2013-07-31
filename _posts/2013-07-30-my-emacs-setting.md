@@ -71,3 +71,132 @@ Note that other instructions on the net tell you to use a .Xdefaults file. Howev
     xrdb .Xresources
 
 - Now restart your Emacs to see the effect.
+
+# My personal.el file
+The following is just a backup.
+
+    ;;; personal.el --- my settings
+    ;;; Commentary:
+
+    ;;; Code:
+    ;; theme
+    (disable-theme 'zenburn)
+    ;;(load-theme 'dichromacy t)
+
+    ;; cursor
+    (setq-default cursor-type 'bar)
+
+    ;; minor mode
+    ;; outline minor mode prefix
+    (setq outline-minor-mode-prefix [(control o)])
+
+    ;; auctex
+    (mapc (lambda (mode)
+    (add-hook 'LaTeX-mode-hook mode))
+    (list 'LaTeX-math-mode
+    'linum-mode
+    'auto-complete-mode
+    'outline-minor-mode
+    'auto-fill-mode))
+    (add-hook 'LaTeX-mode-hook
+    (lambda ()
+    (setq TeX-auto-untabify t     ; remove all tabs before saving
+    TeX-engine 'xetex       ; use xelatex default
+    TeX-show-compilation t) ; display compilation windows
+    ;; (TeX-global-PDF-mode t)       ; PDF mode enable, not plain
+    (setq TeX-save-query nil)
+    (imenu-add-menubar-index) ))
+
+    ;; reftex
+    (require 'reftex)
+    (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+    (setq reftex-plug-into-AUCTeX t)
+
+    ;; cdlatex
+    (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
+    (autoload 'cdlatex-mode "cdlatex" "CDLaTeX Mode" t)
+    (autoload 'turn-on-cdlatex "cdlatex" "CDLaTeX Mode" nil)
+
+    ;; bibretrieve
+    (add-to-list 'load-path "~/.emacs.d/personal/bibretrieve")
+    (load "bibretrieve")
+
+    ;; auto name post file
+    (defun insert-post-title ()
+    "Insert the date in current position."
+    (interactive)
+    (insert (format-time-string "%Y-%m-%d-")))
+
+    ;; set key for naming post file
+    (global-set-key (kbd "<f4>") 'insert-post-title)
+
+    ;; template
+    (autoload 'file-template-auto-insert "file-template" t t)
+    (add-hook 'find-file-not-found-hooks
+    'file-template-find-file-not-found-hook 'append)
+
+    ;; org refile
+    (setq org-refile-targets (quote (("note.org" :maxlevel . 1)
+    ("todo.org" :maxlevel . 2)
+    ("project.org" :maxlevel . 1)
+    ("finished.org" :maxlevel . 1))))
+
+
+    ;; org capture
+    (setq org-directory "~/org/")
+    (setq org-default-notes-file "~/org/inbox")
+    (define-key global-map "\C-cc" 'org-capture)
+
+    ;; org todo keywords
+    (setq org-todo-keywords
+    '((sequence "TODO(t)" "|" "DONE(d)" "ABORTED(a)")))
+
+    ;; capture templats
+    (setq org-capture-templates
+    '(("t" "Todo" entry (file+headline "~/org/todo.org" "Unorganized Tasks")
+    "* TODO %?\n")
+    ("b" "To buy" entry (file+headline "~/org/todo.org" "To buy")
+    "* TODO %?\n")
+    ("a" "Appointment" entry (file+headline "~/org/todo.org" "Appointments")
+    "* TODO %?\n %i %^T\n")
+    ("s" "Schedule" entry (file+headline "~/org/todo.org" "Schedule")
+    "* TODO %?\n %i %t\n")
+    ("f" "Future" entry (file+headline "~/org/todo.org" "Future")
+    "* %?\n")
+    ("i" "Idea" entry (file+headline "~/org/note.org" "Ideas")
+    "* %?\n")
+    ("B" "Book" entry (file+headline "~/org/note.org" "Books")
+    "* %?\n :PROPERTIES:\n %^{TITLE}p %^{AUTHOR}p :START-DATE: %U\n :END:\n")
+    )
+    )
+
+    ;; org publish
+    (require 'org-publish)
+    (setq org-publish-project-alist
+    '(
+
+    ;; ... add all the components here (see below)...
+    ;; org note
+    ("org-notes"
+    :base-directory "~/orgpub/post"
+    :base-extension "org"
+    :publishing-directory "~/lilinleave.github.com/_posts"
+    :recursive t
+    :publishing-function org-publish-org-to-html
+    :headline-levels 4             ; Just the default for this project.
+    :body-only t ;; Only export section between <body> </body>
+    )
+    ;; org static
+    ("org-static"
+    :base-directory "~/orgpub/"
+    :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+    :publishing-directory "~/lilinleave.github.com/"
+    :recursive t
+    :publishing-function org-publish-attachment
+    )
+    ("pub" :components ("org-notes" "org-static"))
+    )
+    )
+
+    (provide 'personal)
+    ;;; personal.el ends here
