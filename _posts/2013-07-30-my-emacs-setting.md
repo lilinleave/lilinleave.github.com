@@ -62,7 +62,7 @@ The default font looks ugly for me and I've determined to change it the first we
         Emacs.Fontset-0:-bitstream-courier 10 pitch-*-*-normal--*-*-*-*-m-*-myfontset
         Emacs.font:myfontset
 
-    The first line is choosed from the output of your xlsfonts. The last part is replaced by a user defined name. The "bold/medium" and "i/r" are font style, the zeros are font size. They don't need to be determined and can be replaced by '*'s. Other parts of the line are more detailed features of the font and you'll know whether you want it only after you use it. The above bitstream-courier looks pretty fine for me and is recommended to be used with light background.
+    The first line is choosed from the output of your xlsfonts. The last part is replaced by a user defined name. The "bold/medium" and "i/r" are font style, the zeros are font size. They don't need to be determined and can be replaced by '\*'s. Other parts of the line are more detailed features of the font and you'll know whether you want it only after you use it. The above bitstream-courier looks pretty fine for me and is recommended to be used with light background.
 
     Note that other instructions on the net tell you to use a .Xdefaults file. However, I found that if font is defined in .Xdefaults it will lose effect after reboot.
 
