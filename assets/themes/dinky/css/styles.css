@@ -12,6 +12,7 @@ dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed,
+article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
@@ -206,7 +207,7 @@ td {
 header {
 	background-color: #171717;
 	color: #FDFDFB;
-  width:210px;
+  width:200px;
   float:left;
   position:fixed;
 	border: 1px solid #000;
@@ -254,7 +255,7 @@ header ul {
 
 header li {
 	list-style-type: none;
-  width:192px;
+  width:190px;
   height:15px;
 	margin-bottom: 12px;
 	line-height: 1em;
@@ -317,7 +318,7 @@ section {
 /* Footer */
 
 footer {
-  width:210px;
+  width:200px;
   float:left;
   position:fixed;
   bottom:10px;
