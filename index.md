@@ -14,4 +14,4 @@ analytics: false
   {% endfor %}
 </ul>
 
-{% include JB/comments}
+{% include JB/comments %}
