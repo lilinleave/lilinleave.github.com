@@ -75,8 +75,8 @@ tags : [Emacs, Dired]
 
 
 
-<pre class="example">? 简单帮助
-h 模式帮助
+<pre class="example">?            简单帮助
+h            模式帮助
 </pre>
 
 <ul>
