@@ -6,8 +6,7 @@ tags : [Emacs, Dired]
 {% include JB/setup %}
 
 <p>
-本文转载自：<a href="http://evan7s.blog.163.com/blog/static/108955356201181710116414/">http://evan7s.blog.163.com/blog/static/108955356201181710116414/</a>
-<br>排版上略有更改。
+本文转载自<a href="http://evan7s.blog.163.com/blog/static/108955356201181710116414/">这篇博文</a>，排版上略有更改。
 </p>
 
 <div id="table-of-contents">
