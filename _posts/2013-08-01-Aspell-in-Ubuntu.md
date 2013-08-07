@@ -5,7 +5,6 @@ tags : [Aspell, Flyspell, Emacs]
 ---
 {% include JB/setup %}
 
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -20,7 +19,7 @@ tags : [Aspell, Flyspell, Emacs]
 </ul>
 </div>
 </div>
-<!-- more -->
+
 <div id="outline-container-1" class="outline-2">
 <h2 id="sec-1">Preface</h2>
 <div class="outline-text-2" id="text-1">

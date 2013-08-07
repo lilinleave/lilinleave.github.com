@@ -5,7 +5,6 @@ tags : [Ubuntu, Wireless USB Adapter]
 ---
 {% include JB/setup %}
 
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -17,7 +16,7 @@ tags : [Ubuntu, Wireless USB Adapter]
 </ul>
 </div>
 </div>
-<!-- more -->
+
 <div id="outline-container-1" class="outline-2">
 <h2 id="sec-1">Install ndisgtk</h2>
 <div class="outline-text-2" id="text-1">

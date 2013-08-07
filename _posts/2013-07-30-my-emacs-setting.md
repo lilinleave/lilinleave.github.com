@@ -11,7 +11,6 @@ tags: [Emacs, Emacs Prelude, Font]
 - [2 Customize font in Emacs on Ubuntu](#sec2)
 - [3 My personal.el file](#sec3)
 
-<!-- more -->
 ## <span id="sec1">Emacs prelude</span>
 I use the [Emacs Prelude](http://batsov.com/prelude/) to support the customization of my Emacs.
 
