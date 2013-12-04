@@ -1,10 +1,3 @@
----
-layout: post
-category : Linux
-tags : [Linux Mint, Install]
----
-{% include JB/setup %}
-
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -32,6 +25,12 @@ tags : [Linux Mint, Install]
 </ul>
 </div>
 </div>
+---
+layout: post
+category : Linux
+tags : [Linux Mint, Install]
+---
+{% include JB/setup %}
 
 <p>
 最近要在自己的另一台笔记本上装个 Linux，以前一直用的 Ubuntu 12.04，不想学新东西但又厌倦了它的界面，准备试试其他基于 Ubuntu 的发行版。开头试了下 Elementary OS，安装运行都没啥问题，界面也漂亮，但不知怎么回事居然会影响 Win7 的运行。表现为使用过 Elementary OS 后开机进入 Win7 会非常卡，但从 Win7 再次重新启动进入 Win7 后又恢复正常。网上也查不到任何解释，只能放弃。刚好前两天 Linux Mint 16 发布了，下下来试了一试，各方面都挺满意，于是准备好慢慢搬家了。放张安装配置后的图像：
@@ -97,7 +96,7 @@ initrd (hd0,0)/initrd.lz
 </pre>
 </div>
 <p>
-然后重启即可。安装好后可以 <code>sudo apt-get --purge remove xserver-xorg-video-nouveau</code> ，把开源驱动卸载掉。
+然后重启即可。安装好后可以`sudo apt-get &#x2013;purge remove xserver-xorg-video-nouveau`，把开源驱动卸载掉。
 </p>
 </div>
 
@@ -137,7 +136,7 @@ initrd (hd0,0)/initrd.lz
 <h3 id="sec-2-3"><span class="section-number-3">2.3</span> 启动过程中不显示 Nvidia Logo</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
-如不想显示 Nvidia Logo，则只需 <code>sudo gedit /etc/X11/xorg.conf</code> ，将以下部分：
+如不想显示 Nvidia Logo，则只需`sudo gedit /etc/X11/xorg.conf`，将以下部分：
 </p>
 <div class="org-src-container">
 
@@ -175,7 +174,7 @@ sudo apt-get install fcitx-frontend-gtk3 fcitx-ui-classic
 </pre>
 </div>
 <p>
-此外如果需要图形配置输入法，可 <code>sudo apt-get install fcitx-config-gtk</code> 。而如果需要在英文系统下使用，还需 <code>sudo gedit /etc/default/locale</code> ，加入一行：
+此外如果需要图形配置输入法，可`sudo apt-get install fcitx-config-gtk`。而如果需要在英文系统下使用，还需`sudo gedit /etc/default/locale`，加入一行：
 </p>
 <div class="org-src-container">
 
@@ -230,7 +229,7 @@ sudo apt-get install emacs-snapshot
 <h3 id="sec-4-3"><span class="section-number-3">4.3</span> org-publish</h3>
 <div class="outline-text-3" id="text-4-3">
 <p>
-安装了新版 Emacs 发现 <code>require 'org-publish</code> 会报错找不到文件，网上搜索之后才发现 org 已升级，org-publish 改名为 ox-publish 了，使用 <code>require 'ox-publish</code> 后加载没问题。但还需将原来的 publish-function 如 org-publish-org-to-html 改为 org-html-publish-to-html，实在不知道为啥要改这些个函数名。
+安装了新版 Emacs 发现 require 'org-publish 会报错找不到文件，网上搜索之后才发现 org 已升级，org-publish 改名为 ox-publish 了，使用 require 'ox-publish 后加载没问题。但还需将原来的 publish-function 如 org-publish-org-to-html 改为 org-html-publish-to-html，实在不知道为啥要改这些个函数名。
 </p>
 </div>
 </div>
