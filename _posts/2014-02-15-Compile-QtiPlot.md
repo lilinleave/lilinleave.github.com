@@ -145,7 +145,7 @@ Other 3rdparty files should be copied likewise.
 <h3 id="sec-3-1"><span class="section-number-3">3.1</span> The build.conf file</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
-Two more modifications are needed for the <code>build.conf</code> file. First, since the 3rdparty supports are copied, the SYS<sub>INCLUDEPATH</sub> and SYS<sub>LIBS</sub> variables are not necessary. However there is a bug in the source that the GLU lib is not linked. Here we can add it to SYS<sub>LIBS</sub>: 
+Two more modifications are needed for the <code>build.conf</code> file. First, since the 3rdparty supports are copied, the SYS_INCLUDEPATH and SYS_LIBS variables are not necessary. However there is a bug in the source that the GLU lib is not linked. Here we can add it to SYS_LIBS: 
 </p>
 <div class="org-src-container">
 
@@ -234,7 +234,7 @@ In the 4.8 version Qt the QtAssistantClient is not included. Install it:
 </pre>
 </div>
 <p>
-Then modify the Makefile in qtiplot (not the one under QTI<sub>ROOT</sub>). Find the line:
+Then modify the Makefile in qtiplot (not the one under QTI_ROOT). Find the line:
 </p>
 <div class="org-src-container">
 
@@ -250,7 +250,7 @@ Add <code>-I/usr/include/qt4/QtAssistantClient</code> to the left.
 <h3 id="sec-4-2"><span class="section-number-3">4.2</span> Bug in sipqtiFFT</h3>
 <div class="outline-text-3" id="text-4-2">
 <p>
-This is a variable miss-match. A <code>tmp</code> directory under QTI<sub>ROOT</sub> is generated during compilation. Open the file <code>tmp/qtiplot/sipqtiFFT.cpp</code> and find the line:
+This is a variable miss-match. A <code>tmp</code> directory under QTI_ROOT is generated during compilation. Open the file <code>tmp/qtiplot/sipqtiFFT.cpp</code> and find the line:
 </p>
 <div class="org-src-container">
 
@@ -280,7 +280,7 @@ After the above procedure, now make should work. We can install:
 </pre>
 </div>
 <p>
-However the Makefile under <code>manual</code> doesn't have a rule for install. We have to remove the corresponding part in the Makefile under QTI<sub>ROOT</sub>. Find the line:
+However the Makefile under <code>manual</code> doesn't have a rule for install. We have to remove the corresponding part in the Makefile under QTI_ROOT. Find the line:
 </p>
 <div class="org-src-container">
 
