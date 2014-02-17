@@ -26,7 +26,7 @@ tags : [Ubuntu, Wireless USB Adapter]
 </li>
 <li>If you get the source with apt-get (sudo apt-get install
     ndiswrapper-source) and install the module, you will get error:
-    ‘struct kernel<sub>stat’</sub> has no member named ‘cpustat’. This
+    ‘struct kernel_stat’ has no member named ‘cpustat’. This
     error has been fixed in the latest version, and you have to
     download and install it manually.
 </li>
