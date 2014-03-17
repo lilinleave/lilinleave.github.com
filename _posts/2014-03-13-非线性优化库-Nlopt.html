@@ -1,0 +1,391 @@
+---
+layout: post
+category : Simulation
+tags : [Nlopt]
+---
+{% include JB/setup %}
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 安装</a></li>
+<li><a href="#sec-2">2. 使用</a>
+<ul>
+<li><a href="#sec-2-1">2.1. Python</a>
+<ul>
+<li><a href="#sec-2-1-1">2.1.1. 不等式约束</a></li>
+<li><a href="#sec-2-1-2">2.1.2. 等式约束</a></li>
+</ul>
+</li>
+<li><a href="#sec-2-2">2.2. Fortran</a>
+<ul>
+<li><a href="#sec-2-2-1">2.2.1. 不等式约束</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<p>
+<a href="http://ab-initio.mit.edu/wiki/index.php/NLopt">Nlopt</a> 是一个开源的优化函数库，可以使用多种算法进行全局优化和局部优化，并且支持多种语言。
+</p>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 安装</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在官网上下载源代码后，库本身的编译和安装是标准流程。但要注意的一点是如果需要支持 Python，则需要将其编译成动态库，如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-text">./configure --enable-shared
+make
+sudo make install
+</pre>
+</div>
+<p>
+默认将安装在 <code>/usr/local/</code> 下，在安装完之后，还需要指定库的动态链接位置，按照官网的方法在 <code>.bashrc</code> 中指定 <code>export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib</code> 似乎没有用。因此我选择直接在系统全局指定：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-text">sudo gedit /etc/ld.so.conf.d/libnlopt.conf
+</pre>
+</div>
+<p>
+新建配置文件，然后输入：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-text"># libnlopt default configuration
+/usr/local/lib
+</pre>
+</div>
+<p>
+重新后即可生效了。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 使用</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Python</h3>
+<div class="outline-text-3" id="text-2-1">
+</div><div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> 不等式约束</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+库的使用首先可以看官网的 <a href="http://ab-initio.mit.edu/wiki/index.php/NLopt_Tutorial">Tutorial</a> ，它描述的是一个二维有约束的最小值问题，由两个不等式作为约束条件。
+由于 Python 的代码易读性，下面先以 Python 为例，分析下基本流程。
+</p>
+<ol class="org-ol">
+<li>首先导入模块：
+<div class="org-src-container">
+
+<pre class="src src-text">import nlopt
+from numpy
+</pre>
+</div>
+</li>
+<li>然后定义需要求最小值的函数，这里是根号 <code>x1</code> ：
+<div class="org-src-container">
+
+<pre class="src src-text">def myfunc(x, grad):
+if grad.size &gt; 0:
+    grad[0] = 0.0
+    grad[1] = 0.5 / sqrt(x[1])
+return sqrt(x[1])
+</pre>
+</div>
+<p>
+由于很多算法还需要用到函数的梯度，因此要先判断是否需要梯度项，若需要就给出定义。
+</p>
+</li>
+<li>接着定义约束条件，这里是 <code>x1&gt;=(a*x0+b)**3</code> ：
+<div class="org-src-container">
+
+<pre class="src src-text"> myconstraint(x, grad, a, b):
+if grad.size &gt; 0:
+    grad[0] = 3 * a * (a*x[0] + b)**2
+    grad[1] = -1.0
+return (a*x[0] + b)**3 - x[1]
+</pre>
+</div>
+<p>
+Nlopt 对于不等式约束条件的定义方法是输出一个函数，以其小于等于零作为约束，因此最后返回的是 <code>(a*x0+b)**3-x1</code> 。同样这里也需定义约束条件的梯度。
+</p>
+</li>
+<li>做好准备之后既可以初始化一个 nlopt 对象：
+<div class="org-src-container">
+
+<pre class="src src-text">opt = nlopt.opt(nlopt.LD_MMA, 2)
+</pre>
+</div>
+<p>
+这里前一个参数是使用的算法，具体有哪些算法及其相应功能可以参看 <a href="http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms">Algorithms</a> 这页。后一个参数是函数自变量的个数，也就是问题的维数。
+</p>
+</li>
+<li>接着限定优化的求解域，这里只设定下界：
+<div class="org-src-container">
+
+<pre class="src src-text">opt.set_lower_bounds([-float('inf'), 0])
+</pre>
+</div>
+<p>
+由于是两个变量，因此传入两个参数，第一个负无穷是 <code>x0</code> 的下界，第二个零则是 <code>x1</code> 的。
+</p>
+</li>
+<li>然后把定义的函数传递给建立的 nlopt 对象：
+<div class="org-src-container">
+
+<pre class="src src-text">opt.set_min_objective(myfunc)
+</pre>
+</div>
+<p>
+传递给的函数表明是求最小值。
+</p>
+</li>
+<li>当然还需要把定义的约束条件也传递进去，这里是两个约束条件，分别由不同的 <code>a,b</code> 参数给出：
+<div class="org-src-container">
+
+<pre class="src src-text">opt.add_inequality_constraint(lambda x,grad: myconstraint(x,grad,2,0), 1e-8)
+opt.add_inequality_constraint(lambda x,grad: myconstraint(x,grad,-1,1), 1e-8)
+</pre>
+</div>
+<p>
+其中由于存在参数的原因，需要指定约束函数的变量是 <code>x,grad</code> ，最后是一个可选参数表明约束精度。
+</p>
+</li>
+<li>接着还需要定义整个优化的精度：
+<div class="org-src-container">
+
+<pre class="src src-text">opt.set_xtol_rel(1e-4)
+</pre>
+</div>
+<p>
+这里 <code>rel</code> 表示相对精度，还可以设定为 <code>abs</code> 即表示绝对精度。
+</p>
+</li>
+<li>现在就可以进行求解了：
+<div class="org-src-container">
+
+<pre class="src src-text">x = opt.optimize([1.234, 5.678])
+</pre>
+</div>
+<p>
+给出的参数是初始值。
+</p>
+</li>
+<li>优化获得的结果，对应的最小值点是直接在输入的 <code>x0,x1</code> 变量中。而最小值是：
+<div class="org-src-container">
+
+<pre class="src src-text">minf = opt.last_optimum_value()
+</pre>
+</div>
+</li>
+<li>最后打印求解结果：
+<div class="org-src-container">
+
+<pre class="src src-text">print "optimum at ", x[0],x[1]
+print "minimum value = ", minf
+print "result code = ", opt.last_optimize_result()
+</pre>
+</div>
+<p>
+Nlopt 还会提供一个结果码，其对应含义可以参看 <a href="http://ab-initio.mit.edu/wiki/index.php/NLopt_Reference#Return_values">Return values</a> 。这里的例子会得到结果码 4,其含义是 NLOPT_XTOL_REACHED，即达到误差精度范围内。
+</p>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-2-1-2" class="outline-4">
+<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> 等式约束</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+由于没有对应指南，我在用 Python 尝试等式约束时出了 bug，最后才发现原因是支持等式约束的算法要少得多。所以也建议使用之前仔细查看算法列表，很多基于梯度的局域优化算法也不支持不等式约束。如果想要使用不支持约束的算法，可以使用增广拉格朗日乘子法。
+</p>
+
+<p>
+下面列出对于等式约束，对上面的代码需要改动的地方，这里选用 <code>x1=(x0-1)**2+1</code> 作为等式约束。（显然由于要优化的 <code>sqrt(x1)</code> 是一个单调函数，求解域内的最小值就取在 <code>x1</code> 自身的最小值上，这里就是 <code>x0=1,x1=1=。注意由于 =sqrt(x1)</code> 的梯度出现了分数，在 <code>x1=0</code> 处发散，所以如果约束条件不强，最小值根据求解域会直接取在 <code>x1=0</code> 处，此时使用基于梯度的优化算法肯定是不收敛的。我开始选用的约束函数 <code>x1=x0</code> 就是这样，幸而 Python 在运行过程中提出了警告。）
+</p>
+<ol class="org-ol">
+<li>在定义完需要优化的函数之后，就可以定义等式约束了，这里不读入参数：
+<div class="org-src-container">
+
+<pre class="src src-text">def myconstraint(x, grad):
+if grad.size &gt; 0:
+    grad[0] = 2.0*(x[0]-1.0)
+    grad[1] = -1.0
+return (x[0]-1.0)**2 - x[1] + 1.0
+</pre>
+</div>
+<p>
+如果是拷贝过来的程序记得除了要改函数也要改梯度。
+</p>
+</li>
+<li>然后就是在初始化 Nlopt 对象的时候指定支持等式约束的算法了：
+<div class="org-src-container">
+
+<pre class="src src-text">opt = nlopt.opt(nlopt.LD_SLSQP, 2)
+</pre>
+</div>
+</li>
+<li>接着，在传递约束函数的时候，接受的应该是：
+<div class="org-src-container">
+
+<pre class="src src-text">opt.add_equality_constraint(myconstraint, 1e-8)
+</pre>
+</div>
+</li>
+</ol>
+<p>
+最后运行得到结果极小值点 <code>x0=1,x1=1</code> ，极小值 1，正确无误。
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Fortran</h3>
+<div class="outline-text-3" id="text-2-2">
+</div><div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 不等式约束</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+再来看下相同例子的 Fortran 的实现。
+</p>
+<ol class="org-ol">
+<li>首先是定义被优化函数的部分：
+<div class="org-src-container">
+
+<pre class="src src-text">subroutine myfunc(val, n, x, grad, need_gradient, f_data)
+  double precision val, x(n), grad(n)
+  integer n, need_gradient
+  if (need_gradient.ne.0) then
+     grad(1) = 0.0
+     grad(2) = 0.5 / dsqrt(x(2))
+  endif
+  val = dsqrt(x(2))
+end subroutine myfunc
+</pre>
+</div>
+<p>
+这里按照官网的说法，只能通过 subroutine 来定义，而不能用 function。传入的参数包括：
+</p>
+<ul class="org-ul">
+<li>val           返回的函数值
+</li>
+<li>n             变量的个数
+</li>
+<li>x             自变量数组
+</li>
+<li>grad          返回的梯度数组
+</li>
+<li>need_gradient 判断是否需要计算梯度
+</li>
+<li>f_data        不定义类型的可选变量，可用于传递函数的参数，这里没有使用
+</li>
+</ul>
+</li>
+<li>然后定义约束条件，类似的：
+<div class="org-src-container">
+
+<pre class="src src-text">subroutine myconstraint(val, n, x, grad, need_gradient, d)
+  integer need_gradient
+  double precision val, x(n), grad(n), d(2), a, b
+  a = d(1)
+  b = d(2)
+  if (need_gradient.ne.0) then
+     grad(1) = 3. * a * (a*x(1) + b)**2
+     grad(2) = -1.0
+  endif
+  val = (a*x(1) + b)**3 - x(2)
+end subroutine myconstraint
+</pre>
+</div>
+<p>
+这里的变量定义和 myfunc 中完全一样，但最后的 d 派上了用场。
+</p>
+</li>
+<li>最后看下主程序，首先是变量声明部分：
+<div class="org-src-container">
+
+<pre class="src src-text">program main
+  external myfunc, myconstraint
+  double precision lb(2)
+  integer*8 opt
+  double precision d1(2), d2(2)
+  double precision x(2), minf
+  integer ires
+  include 'nlopt.f'
+</pre>
+</div>
+<p>
+注意两个 subroutine 必须声明为 external。在 fortran 里的 nlopt 对象是通过  <code>integer*8</code> 类型的变量传递指针实现的，而 <code>integer</code> 型的 ires 是返回码。
+</p>
+</li>
+<li>接着就可以创建 nlopt 对象并设定求解域了。
+<div class="org-src-container">
+
+<pre class="src src-text">call nlo_create(opt, NLOPT_LD_MMA, 2)
+call nlo_get_lower_bounds(ires, opt, lb)
+lb(2) = 0.0
+call nlo_set_lower_bounds(ires, opt, lb)
+</pre>
+</div>
+<p>
+其中 <code>nlo_get_lower_bounds</code> 函数的作用是获得 F77 没有的负无穷，然后把 <code>x2</code> （在  fortran 中数组从 1 开始）的下界改为零，最后进行设定。
+</p>
+</li>
+<li>接着同样是把优化函数和约束条件传给对象：
+<div class="org-src-container">
+
+<pre class="src src-text">call nlo_set_min_objective(ires, opt, myfunc, 0)
+
+d1(1) = 2.
+d1(2) = 0.
+call nlo_add_inequality_constraint(ires, opt,&amp;
+     myconstraint, d1, 1.D-8)
+d2(1) = -1.
+d2(2) = 1.
+call nlo_add_inequality_constraint(ires, opt,&amp;
+     myconstraint, d2, 1.D-8)
+
+call nlo_set_xtol_rel(ires, opt, 1.D-4)
+</pre>
+</div>
+<p>
+在设定最优化对象时最后的参数 0 表示函数 <code>myfunc</code> 不需要其他参数。而对于约束条件则 <code>d1</code>  和 <code>d2</code> 就是 <code>myconstraint</code> 的参数。最后设定求解精度。
+</p>
+</li>
+<li>接下来就可以设定初始条件并求解了：
+<div class="org-src-container">
+
+<pre class="src src-text">  x(1) = 1.234
+  x(2) = 5.678
+  call nlo_optimize(ires, opt, x, minf)
+  if (ires.lt.0) then
+     write(*,*) 'nlopt failed!'
+  else
+     write(*,*) 'found min at ', x(1), x(2)
+     write(*,*) 'min val = ', minf
+  endif
+
+  call nlo_destroy(opt)
+  stop
+end program main
+</pre>
+</div>
+<p>
+在调用优化函数的时候需要给一个双精度变量 <code>minf</code> 来读取最小值。最后要记得调用 <code>nlo_destroy</code> 释放内存。
+</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
