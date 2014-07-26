@@ -2,7 +2,7 @@
 layout: page
 title: Welcome!
 tagline: Simulation, Classic Music & Others
-analytics: false
+analytics: google
 ---
 {% include JB/setup %}
 
@@ -11,5 +11,3 @@ analytics: false
   <a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
   </h2>
 {% endfor %}
-
-{% include JB/comments %}
